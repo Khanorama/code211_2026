@@ -1,6 +1,6 @@
 import { startTransition, useEffect, useState } from 'react';
 import { useUser } from '../context/useUser';
-import { parseResume } from '../services/mockResumeService';
+import { parseResume } from '../services/resumeService';
 import { emptyProfile, getProfileCompletion } from '../services/profileUtils';
 
 const Profile = () => {
@@ -29,7 +29,7 @@ const Profile = () => {
     }
 
     setIsParsingResume(true);
-    setStatusMessage(`Parsing ${file.name} and generating mock profile suggestions...`);
+    setStatusMessage(`Parsing ${file.name} with AI...`);
 
     try {
       const parsedResume = await parseResume(file, formData);
@@ -44,7 +44,7 @@ const Profile = () => {
         }));
       });
 
-      setStatusMessage('Resume uploaded. We added mock insights and suggested tags for review.');
+      setStatusMessage('Resume parsed. Skills and interests have been extracted and added for review.');
     } finally {
       setIsParsingResume(false);
     }
@@ -53,7 +53,7 @@ const Profile = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSaving(true);
-    setStatusMessage('Saving profile to mock Supabase...');
+    setStatusMessage('Saving profile...');
 
     try {
       await saveProfile(formData);
@@ -84,12 +84,12 @@ const Profile = () => {
           <article className="stat-card">
             <span className="stat-card__label">Resume status</span>
             <strong>{formData.resumeFileName ? 'Uploaded' : 'Pending'}</strong>
-            <p>{formData.resumeFileName || 'Add a resume for mock parsing insights.'}</p>
+            <p>{formData.resumeFileName || 'Add a resume to extract skills automatically.'}</p>
           </article>
           <article className="stat-card">
             <span className="stat-card__label">Database</span>
             <strong>Supabase</strong>
-            <p>Profile data persists locally between sessions.</p>
+            <p>Profile data is saved and synced.</p>
           </article>
         </div>
       </header>
@@ -240,8 +240,7 @@ const Profile = () => {
               <p className="eyebrow">Resume upload</p>
               <h2>Attach a resume</h2>
               <p>
-                Upload is UI-only, but we simulate extracted skills, interest suggestions, and fit
-                guidance.
+                Upload your resume to automatically extract skills and interests.
               </p>
             </div>
 
@@ -300,38 +299,71 @@ const Profile = () => {
 
           {formData.resumeInsights ? (
             <div className="resume-insights">
-              <p className="eyebrow">Mock parser insights</p>
+              <p className="eyebrow">Resume insights</p>
               <h2>{formData.resumeInsights.recommendedTrack}</h2>
               <p>{formData.resumeInsights.summary}</p>
 
               <div className="stack">
                 <div>
-                  <p className="resume-insights__label">Extracted skills</p>
+                  <p className="resume-insights__label">Extracted skills — click to add</p>
                   <div className="tag-row">
-                    {formData.resumeInsights.extractedSkills.map((skill) => (
-                      <span key={skill} className="tag">
-                        {skill}
-                      </span>
-                    ))}
+                    {formData.resumeInsights.extractedSkills.map((skill) => {
+                      const alreadyAdded = (formData.skills || '').toLowerCase().includes(skill.toLowerCase());
+                      return (
+                        <button
+                          key={skill}
+                          type="button"
+                          className="tag"
+                          style={{ cursor: alreadyAdded ? 'default' : 'pointer', border: 'none', fontFamily: 'inherit', opacity: alreadyAdded ? 0.6 : 1 }}
+                          onClick={() => {
+                            if (alreadyAdded) return;
+                            const current = formData.skills.trim();
+                            setFormData((c) => ({
+                              ...c,
+                              skills: current ? `${current}, ${skill}` : skill,
+                            }));
+                          }}
+                        >
+                          {alreadyAdded ? `${skill} (added)` : `+ ${skill}`}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
                 <div>
-                  <p className="resume-insights__label">Suggested interests</p>
+                  <p className="resume-insights__label">Suggested interests — click to add</p>
                   <div className="tag-row">
-                    {formData.resumeInsights.suggestedInterests.map((interest) => (
-                      <span key={interest} className="tag tag--soft">
-                        {interest}
-                      </span>
-                    ))}
+                    {formData.resumeInsights.suggestedInterests.map((interest) => {
+                      const alreadyAdded = (formData.interests || '').toLowerCase().includes(interest.toLowerCase());
+                      return (
+                        <button
+                          key={interest}
+                          type="button"
+                          className={alreadyAdded ? 'tag' : 'tag tag--soft'}
+                          style={{ cursor: alreadyAdded ? 'default' : 'pointer', border: 'none', fontFamily: 'inherit' }}
+                          onClick={() => {
+                            if (alreadyAdded) return;
+                            const current = formData.interests.trim();
+                            setFormData((c) => ({
+                              ...c,
+                              interests: current ? `${current}, ${interest}` : interest,
+                            }));
+                          }}
+                        >
+                          {alreadyAdded ? `${interest} (added)` : `+ ${interest}`}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
             </div>
           ) : (
             <div className="empty-state">
-              <h2>No resume insights yet</h2>
-              <p>Upload a file to simulate parsing and seed the form with mock recommendations.</p>
+              <h2>No resume insights yet
+              </h2>
+              <p>Upload your resume to automatically extract skills and interests.</p>
             </div>
           )}
         </aside>

@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+openai
+requests
+beautifulsoup4
+python-multipart
+python-dotenv
+pypdf
+aisuite[openai]

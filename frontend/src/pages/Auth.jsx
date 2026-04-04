@@ -3,76 +3,76 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/useUser';
 
 const Auth = () => {
-  const [mode, setMode] = useState('signin');
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, login } = useUser();
+  const [mode, setMode]       = useState('signin');
+  const [formData, setFormData] = useState({ fullName: '', email: '', password: '', confirmPassword: '' });
+  const [error, setError]     = useState('');
+  const [isSubmitting, setSubmitting] = useState(false);
+  const { user, login, signup } = useUser();
   const navigate = useNavigate();
 
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  if (user) return <Navigate to="/dashboard" replace />;
 
   const isSignIn = mode === 'signin';
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((current) => ({ ...current, [name]: value }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((c) => ({ ...c, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError('');
 
     if (!isSignIn && formData.password !== formData.confirmPassword) {
-      setError('Passwords need to match before we can create your workspace.');
+      setError('Passwords do not match.');
       return;
     }
 
-    setIsSubmitting(true);
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
 
+    setSubmitting(true);
     try {
-      login({
-        email: formData.email,
-        fullName: formData.fullName,
-      });
+      if (isSignIn) {
+        await login({ email: formData.email, password: formData.password });
+      } else {
+        await signup({ email: formData.email, password: formData.password, fullName: formData.fullName });
+      }
       navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.');
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
   return (
     <section className="auth-page">
       <div className="auth-page__hero panel panel--hero">
-        <p className="eyebrow">Internships + research in one place</p>
+        <p className="eyebrow">Volunteer + internship opportunities</p>
         <h1 className="display-title">Build a profile once. Explore smarter matches faster.</h1>
         <p className="lead">
-          PathFinder gives students a guided flow for onboarding, profile building,
-          opportunity matching, and AI-assisted application prep.
+          PathFinder finds real local volunteer and internship opportunities near you,
+          ranks them by fit, and writes your outreach email with one click.
         </p>
 
         <div className="feature-grid">
           <article className="feature-card">
             <p className="feature-card__number">01</p>
             <h2>Profile-aware matching</h2>
-            <p>Turn education, skills, interests, and resume signals into ranked opportunities.</p>
+            <p>Turn your skills, interests, and goals into ranked local opportunities.</p>
           </article>
           <article className="feature-card">
             <p className="feature-card__number">02</p>
-            <h2>Mock scraped pipeline</h2>
-            <p>Preview internship and research leads without needing a live backend.</p>
+            <h2>Live web scraping</h2>
+            <p>Real opportunities found via search — updated every time you run a search.</p>
           </article>
           <article className="feature-card">
             <p className="feature-card__number">03</p>
-            <h2>AI workshop support</h2>
-            <p>Draft essays, outreach emails, and application plans in a focused workspace.</p>
+            <h2>One-click outreach</h2>
+            <p>Draft and send a personalised email to any opportunity in seconds.</p>
           </article>
         </div>
       </div>
@@ -82,14 +82,14 @@ const Auth = () => {
           <button
             className={isSignIn ? 'auth-toggle__button auth-toggle__button--active' : 'auth-toggle__button'}
             type="button"
-            onClick={() => setMode('signin')}
+            onClick={() => { setMode('signin'); setError(''); }}
           >
             Sign in
           </button>
           <button
             className={!isSignIn ? 'auth-toggle__button auth-toggle__button--active' : 'auth-toggle__button'}
             type="button"
-            onClick={() => setMode('signup')}
+            onClick={() => { setMode('signup'); setError(''); }}
           >
             Create account
           </button>
@@ -99,7 +99,9 @@ const Auth = () => {
           <p className="eyebrow">Welcome</p>
           <h2>{isSignIn ? 'Pick up where you left off' : 'Start your PathFinder workspace'}</h2>
           <p>
-            This demo keeps auth local only, so you can move straight into the product flow.
+            {isSignIn
+              ? 'Sign in to access your saved profile and opportunities.'
+              : 'Create an account to save your profile and track your progress.'}
           </p>
         </div>
 
@@ -113,7 +115,7 @@ const Auth = () => {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                placeholder="Avery Johnson"
+                placeholder="Alex Chen"
                 required={!isSignIn}
               />
             </label>
@@ -140,7 +142,7 @@ const Auth = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter any password for demo mode"
+              placeholder="At least 6 characters"
               required
             />
           </label>
@@ -160,15 +162,17 @@ const Auth = () => {
             </label>
           )}
 
-          {error ? <p className="status-message status-message--error">{error}</p> : null}
+          {error && <p className="status-message status-message--error">{error}</p>}
 
-          <div style={{marginBottom: 8}}/>
-          <button className="button button--primary button--full" type="submit" disabled={isSubmitting}>
+          <div style={{ marginBottom: 8 }} />
+          <button
+            className="button button--primary button--full"
+            type="submit"
+            disabled={isSubmitting}
+          >
             {isSubmitting
-              ? 'Setting up your workspace...'
-              : isSignIn
-                ? 'Enter dashboard'
-                : 'Create demo account'}
+              ? (isSignIn ? 'Signing in...' : 'Creating account...')
+              : (isSignIn ? 'Sign in' : 'Create account')}
           </button>
         </form>
       </div>
