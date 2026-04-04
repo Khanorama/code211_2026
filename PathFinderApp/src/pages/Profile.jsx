@@ -238,7 +238,7 @@ const Profile = () => {
           <div className="upload-card">
             <div>
               <p className="eyebrow">Resume upload</p>
-              <h2>Attach a resume for mock parsing</h2>
+              <h2>Attach a resume</h2>
               <p>
                 Upload is UI-only, but we simulate extracted skills, interest suggestions, and fit
                 guidance.
@@ -252,14 +252,14 @@ const Profile = () => {
                 onChange={handleResumeUpload}
                 hidden
               />
-              {isParsingResume ? 'Parsing resume...' : 'Upload resume'}
+              {isParsingResume ? 'Parsing resume...' : 'Upload'}
             </label>
           </div>
 
           {formData.resumeFileName ? (
             <div className="tag-row">
               <span className="tag tag--soft">{formData.resumeFileName}</span>
-              <span className="tag tag--soft">Mock parsed</span>
+              <span className="tag tag--soft">Parsed</span>
             </div>
           ) : null}
 

@@ -49,7 +49,7 @@ const Workshop = () => {
 
   return (
     <section className="page">
-      <header className="page-header">
+      <header className="page-header page-header-workshop">
         <div>
           <p className="eyebrow">AI-assisted workshop</p>
           <h1>Draft materials with a focused writing and planning workspace.</h1>
@@ -57,11 +57,6 @@ const Workshop = () => {
             Switch between essay support, outreach emails, and application guidance. Responses are
             mocked, but shaped by your saved profile.
           </p>
-        </div>
-
-        <div className="info-banner">
-          <span className="status-dot" />
-          Demo mode uses mocked responses only. No external API is called.
         </div>
       </header>
 
