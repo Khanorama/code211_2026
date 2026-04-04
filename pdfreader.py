@@ -26,11 +26,24 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import aisuite as ai
 from pypdf import PdfReader
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+api_key = os.getenv("MY_RESUME_APP_KEY")
+
+print("DEBUG KEY:", api_key)
+
+if not api_key:
+    raise ValueError("❌ API key not found. .env is not loading.")
+
+os.environ["OPENAI_API_KEY"] = api_key
 
 def extract_pdf_text(pdf_path: str) -> str:
     """Extract raw text from a PDF using pypdf."""
