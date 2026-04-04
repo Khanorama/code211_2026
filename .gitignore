@@ -1,0 +1,83 @@
+# =========================
+# 🔐 Secrets / Environment
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# 🐍 Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py,cover
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+# 🧪 Virtual Environments
+# =========================
+hackathon2026/
+venv/
+env/
+.venv/
+
+# =========================
+# 📓 Jupyter Notebooks
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# 🧾 Logs & Temp Files
+# =========================
+*.log
+*.tmp
+*.swp
+
+# =========================
+# 💻 IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# =========================
+# 🖥️ OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 📦 Cache / Tooling
+# =========================
+.cache/
+pytest_cache/
+.mypy_cache/
+
+# =========================
+# 📂 Data / Outputs (optional)
+# =========================
+artifacts/
+outputs/
+data/
+
+# =========================
+# 🔑 API Keys / Credentials
+# =========================
+*.key
+*.pem
+*.crt
+
+# =========================
+# 🚫 Node (if you add frontend later)
+# =========================
+node_modules/
+dist-frontend/
