@@ -88,7 +88,7 @@ const Profile = () => {
           </article>
           <article className="stat-card">
             <span className="stat-card__label">Database</span>
-            <strong>Mock Supabase</strong>
+            <strong>Supabase</strong>
             <p>Profile data persists locally between sessions.</p>
           </article>
         </div>

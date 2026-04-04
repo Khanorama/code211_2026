@@ -169,9 +169,10 @@
 
 .page-header {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr);
-  gap: 24px;
-  align-items: end;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 1fr);
+  gap: 20px;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .page-grid,
@@ -182,7 +183,7 @@
 .opportunity-grid,
 .form-grid {
   display: grid;
-  gap: 24px;
+  gap: 20px;
 }
 
 .page-grid {
@@ -207,7 +208,7 @@
 }
 
 .stat-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(175px, 1fr));
 }
 
 .opportunity-grid {
@@ -260,6 +261,10 @@
 .response-block,
 .summary-list__item {
   padding: 22px;
+}
+
+.stat-card {
+  height: 100%;
 }
 
 .feature-card h2,
@@ -396,6 +401,7 @@
   padding: 6px;
   border-radius: 999px;
   background: rgba(222, 232, 236, 0.68);
+  margin-bottom: 10px;
 }
 
 .auth-toggle__button,
@@ -422,7 +428,7 @@
 .info-banner,
 .upload-card {
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
 .info-banner {

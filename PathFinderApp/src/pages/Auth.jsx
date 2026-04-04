@@ -162,6 +162,7 @@ const Auth = () => {
 
           {error ? <p className="status-message status-message--error">{error}</p> : null}
 
+          <div style={{marginBottom: 8}}/>
           <button className="button button--primary button--full" type="submit" disabled={isSubmitting}>
             {isSubmitting
               ? 'Setting up your workspace...'
@@ -170,11 +171,6 @@ const Auth = () => {
                 : 'Create demo account'}
           </button>
         </form>
-
-        <div className="info-banner">
-          <span className="status-dot" />
-          UI-only auth with local session persistence for easy testing.
-        </div>
       </div>
     </section>
   );

@@ -74,7 +74,7 @@ const Dashboard = () => {
       <header className="page-header">
         <div>
           <p className="eyebrow">Matched opportunities</p>
-          <h1>Explore the best internships and research roles for your profile.</h1>
+          <h1 style={{fontSize: 60}}>Explore the best internships and research roles for your profile.</h1>
           <p className="lead">
             Rankings are generated from mock scraped data using the academic, skill, and interest
             signals in your profile.
