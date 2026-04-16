@@ -51,21 +51,6 @@ Search takes 15–30 seconds depending on how many pages are fetched.
 
 ---
 
-## What changed from the original ZIP
-
-Only the three mock service files in `frontend/src/services/` were replaced.
-Every page, component, CSS file, and route is identical to the original ZIP.
-
-| File | Change |
-|---|---|
-| `mockOpportunityService.js` | Calls real `/search/stream` SSE endpoint |
-| `mockResumeService.js` | Calls real `/parse-resume` endpoint |
-| `mockWorkshopService.js` | Calls real `/draft-email` and `/workshop` endpoints |
-
-Original mock files kept as `*_backup.js` — automatic fallback if backend is offline.
-
----
-
 ## API endpoints
 
 | Method | Route | Description |
